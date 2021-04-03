@@ -1,0 +1,26 @@
+package shooting;
+
+
+import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+
+public class Bullet extends Group {
+
+    private final String bulletURL = "images\\bullet.jpg";
+
+
+    public Bullet(double x , double y , double width , double height) {
+
+        Rectangle rec1 = new Rectangle(x , y , width , height);
+        rec1.setStroke(Color.BLACK);
+        rec1.setFill(new ImagePattern(new Image(bulletURL) , 0 , 0 , 1 , 1 , true));
+
+        this.getChildren().addAll(rec1);
+
+    }
+
+
+}
