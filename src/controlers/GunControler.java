@@ -7,8 +7,8 @@ import javafx.scene.transform.Translate;
 
 public class GunControler implements EventHandler<MouseEvent> {
 
-    private Rotate rotate;
-    private Translate translate;
+    private final Rotate rotate;
+    private final Translate translate;
 
     public GunControler(Rotate rotate, Translate translate) {
         this.translate = translate;

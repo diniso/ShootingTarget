@@ -3,6 +3,7 @@ package target;
 
 import controlers.BulletCountControler;
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
 import javafx.scene.paint.Color;
@@ -12,13 +13,13 @@ import levels.Level;
 
 public class ElipticMovingTarget extends Target{
 
-    private ScaleTransition scale;
-    private FadeTransition fade;
-    private PathTransition path;
-    private Level level;
+    private final ScaleTransition scale;
+    private final FadeTransition fade;
+    private final PathTransition path;
+    private final Level level;
 
-    public ElipticMovingTarget(double x, double y, double r, int numOfCircles, int[] numbers , double radiusX , double radiusY, double seconds , boolean direction , Level l, BulletCountControler bulletcontroler) {
-        super(x, y, r, numOfCircles, numbers, bulletcontroler);
+    public ElipticMovingTarget(double x, double y, double r, int[] numbers , double radiusX , double radiusY, double seconds , boolean rightSideStart , Level l, BulletCountControler bulletcontroler) {
+        super(x, y, r, numbers, bulletcontroler);
         this.setOpacity(0);
         level = l;
 
@@ -31,7 +32,7 @@ public class ElipticMovingTarget extends Target{
         fade.setFromValue(1.0); fade.setToValue(0.0);
 
         Ellipse el;
-        if (direction) {
+        if (rightSideStart) {
             el = new Ellipse(x + r/2+ radiusX, y + r/2, radiusX,radiusY);
         }
         else {
@@ -42,6 +43,7 @@ public class ElipticMovingTarget extends Target{
         el.setStroke(Color.BLUE);
 
         path = new PathTransition(t , el , this);
+
 
     }
 
@@ -54,9 +56,12 @@ public class ElipticMovingTarget extends Target{
 
     public void play() {
         this.setListeners();
-        scale.setOnFinished(actionEvent -> {
-            level.insertPointsAndRemove(this , 0 , 0);
-        });
+        scale.setOnFinished(actionEvent -> level.insertPointsAndRemove(this , 0 , 0));
+
+        path.setInterpolator(Interpolator.EASE_IN);
+        fade.setInterpolator(Interpolator.EASE_IN);
+        scale.setInterpolator(Interpolator.EASE_IN);
+
         path.play();
         fade.play();
         scale.play();

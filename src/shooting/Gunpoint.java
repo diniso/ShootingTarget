@@ -7,7 +7,7 @@ import javafx.scene.transform.Translate;
 
 public class Gunpoint extends Group {
 
-    private Translate translate;
+    private final Translate translate;
 
     public Gunpoint(double x , double y , double width , double height) {
         Line l1 = new Line(x , y , x + width , y + height);

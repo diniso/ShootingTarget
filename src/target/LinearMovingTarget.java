@@ -2,6 +2,7 @@ package target;
 
 import controlers.BulletCountControler;
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
@@ -9,14 +10,14 @@ import levels.Level;
 
 public class LinearMovingTarget extends Target{
 
-    private ScaleTransition scale;
-    private FadeTransition fade;
-    private TranslateTransition translate;
-    private Level level;
+    private final ScaleTransition scale;
+    private final FadeTransition fade;
+    private final TranslateTransition translate;
+    private final Level level;
 
 
-    public LinearMovingTarget(double x, double y, double r, int numOfCircles, int[] numbers , double width , double height, double seconds, Level l, BulletCountControler bulletcontroler) {
-        super(x, y, r, numOfCircles, numbers, bulletcontroler);
+    public LinearMovingTarget(double x, double y, double r, int[] numbers , double width , double height, double seconds, Level l, BulletCountControler bulletcontroler) {
+        super(x, y, r, numbers, bulletcontroler);
         this.setOpacity(0.0);
         level = l;
 
@@ -44,9 +45,12 @@ public class LinearMovingTarget extends Target{
 
     public void play() {
         this.setListeners();
-        scale.setOnFinished(actionEvent -> {
-            level.insertPointsAndRemove(this , 0 , 0);
-        });
+        scale.setOnFinished(actionEvent -> level.insertPointsAndRemove(this , 0 , 0));
+
+        translate.setInterpolator(Interpolator.EASE_IN);
+        fade.setInterpolator(Interpolator.EASE_IN);
+        scale.setInterpolator(Interpolator.EASE_IN);
+
         translate.play();
         fade.play();
         scale.play();

@@ -12,18 +12,15 @@ import java.util.ArrayList;
 public abstract class  Target extends TargetWithoutNumbers {
 
     private int collectedPoints;
-    private int[] numbers;
-    private ArrayList<Text> brojevi = new ArrayList<>();
-    private BulletCountControler bulletcontroler;
+    private final int[] numbers;
+    private final ArrayList<Text> brojevi = new ArrayList<>();
+    private final BulletCountControler bulletcontroler;
 
-    private Color getRainbowColor() {
-        return Color.RED;
-    }
-
-    public Target(double x , double y , double r , int numOfCircles , int[] numbers, BulletCountControler bulletcontroler) {
-        super(x,y,r,numOfCircles);
+    public Target(double x , double y , double r , int[] numbers, BulletCountControler bulletcontroler) {
+        super(x,y,r,numbers.length);
         this.numbers = numbers;
         this.bulletcontroler = bulletcontroler;
+        int numOfCircles = numbers.length;
 
         double circleWidth = r/numOfCircles;
         Font font = Font.font(8);

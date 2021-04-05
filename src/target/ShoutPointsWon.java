@@ -9,8 +9,8 @@ import javafx.util.Duration;
 
 public class ShoutPointsWon extends Group {
 
-    private FadeTransition fade;
-    private ScaleTransition sc;
+    private final FadeTransition fade;
+    private final ScaleTransition scale;
 
 
     public ShoutPointsWon(double x , double y, double expiringTime, int points) {
@@ -19,19 +19,19 @@ public class ShoutPointsWon extends Group {
 
         Text poruka = new Text(x - dx, y + dy, ""+ points);
         fade = new FadeTransition(Duration.seconds(expiringTime), poruka);
-        sc = new ScaleTransition(Duration.seconds(expiringTime), poruka);
+        scale = new ScaleTransition(Duration.seconds(expiringTime), poruka);
         fade.setFromValue(1.0);
         fade.setToValue(0.0);
-        sc.setFromY(1.0);
-        sc.setFromX(1.0);
-        sc.setToX(0.5);
-        sc.setToY(0.5);
+        scale.setFromY(1.0);
+        scale.setFromX(1.0);
+        scale.setToX(0.5);
+        scale.setToY(0.5);
         poruka.setFont(Font.font(20));
         this.getChildren().add(poruka);
     }
 
     public void play() {
-        sc.play();
+        scale.play();
         fade.play();
     }
 }

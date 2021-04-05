@@ -7,17 +7,21 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+
 
 public class Gun extends Group {
 
-    private final String gunUrl = "images\\gun1.jpg";
-    private Rotate rotate;
+    private static final String gunUrl = "images\\gun.jpg";
+    private final Rotate rotate;
 
-    public Gun(double x , double y , double width , double height) {
+    public Gun(double x , double y , double width , double height) throws MalformedURLException {
 
         Rectangle rec1 = new Rectangle(x , y , width , height);
         rec1.setStroke(Color.BLACK);
-        rec1.setFill(new ImagePattern(new Image(gunUrl) , 0 , 0 , 1 , 1 , true));
+        rec1.setFill(new ImagePattern(new Image(new File(gunUrl).toURI().toURL().toString()) , 0 , 0 , 1 , 1 , true));
 
         rotate = new Rotate(0 , x + width/2 , y + height/2);
 
