@@ -14,16 +14,13 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Translate;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import sample.Main;
 import shooting.Bullet;
 import shooting.Gun;
 import shooting.Gunpoint;
-import target.ElipticMovingTarget;
-import target.ShoutPointsWon;
-import target.Target;
-import target.TargetWithoutNumbers;
+import target.*;
+import view.Result;
 import view.Wall;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -31,7 +28,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Level extends Group{
 
@@ -58,21 +54,28 @@ public class Level extends Group{
     private int points = 0;
     private final HashMap<Integer , Integer>  numOfPointsHit = new HashMap<>();
     private ArrayList<Target> targets;
+    private KeyControler keyControler;
+    private BulletCountControler bulletcontroler;
+    private Rectangle background;
+    private Group playable;
+    private int numOfBullets;
 
 
-    public Level(double width , double height, int numOfBullets, double velocity , int levelNumber, int numOfTragetsOnScene, Group parent)throws Exception {
+    public Level(double width , double height, double percentageIncreaseBullets, double velocity , int levelNumber, int numOfTragetsOnScene, Group parent)throws Exception {
         this.height = height;
         this.width = width;
         this.numOfTargetsOnScene = numOfTragetsOnScene;
         this.parent = parent;
-        BulletCountControler bulletcontroler;
+        createTargets(levelNumber , velocity);
+        numOfBullets = (int)Math.round(percentageIncreaseBullets*numOfBullets);
+
         Text numOfBulletsLeft = new Text("" + numOfBullets);
 
 
         Group mainStage = new Group();
-        Group playable = new Group();
+        playable = new Group();
 
-        Rectangle background = new Rectangle(0 , 0 , width*(1.0 - diffPer) , height*(1.0 - diffPer)-gunHeight);
+        background = new Rectangle(0 , 0 , width*(1.0 - diffPer) , height*(1.0 - diffPer)-gunHeight);
         background.setFill(Color.TRANSPARENT);
         background.setStroke(Color.BLACK);
 
@@ -84,8 +87,9 @@ public class Level extends Group{
         playable.setOnMouseMoved( new GunControler(gun.getMyRotate(), point.getMyTranslate()));
         playable.setOnMouseClicked(bulletcontroler = new BulletCountControler(numOfBullets, numOfBulletsLeft));
 
+        for (Target t : targets)
+            t.setBulletcontroler(bulletcontroler);
 
-        createTargets(levelNumber , velocity, bulletcontroler);
         playable.getChildren().addAll(background, gun);
         playable.getChildren().addAll(point);
         playable.getChildren().addAll(targets);
@@ -129,17 +133,21 @@ public class Level extends Group{
         numOfTargetsLeft.setY(upperWindowY + upperWindowHeight *(1.0-diffPer));
         targetgroup.getChildren().addAll(targetpicture , numOfTargetsLeft);
 
+        Text foter = new Text("Press ENTER to play!");
+        foter.setFont(fontsize);
+        foter.setY((1.0 - diffPer/6)*height);
+        foter.setX(width/2 - 140);
 
-        border.getChildren().addAll(pozadina, bulletgroup, numOfPointsWon, targetgroup);
+        border.getChildren().addAll(pozadina, bulletgroup, numOfPointsWon, targetgroup, foter);
 
         this.getChildren().addAll(border, mainStage);
 
-        background.setOnKeyPressed(new KeyControler(playable));
+        background.setOnKeyPressed(keyControler = new KeyControler(this , playable,parent, foter));
         background.setFocusTraversable(true);
 
     }
 
-    private List<Target> createTargets(int levelNumber , double velocity, BulletCountControler bulletcontroler) throws Exception {
+    private void createTargets(int levelNumber , double velocity) throws Exception {
         targets = new ArrayList<>();
 
         int[] numbers = Main.getTargetNumbers();
@@ -151,6 +159,7 @@ public class Level extends Group{
         Document doc = db.parse(file);
         NodeList nodelist = doc.getElementsByTagName(XmlObjectName);
 
+        numOfBullets = nodelist.getLength();
 
         for (int i = 0 ; i < nodelist.getLength(); i++) {
             Element node = (Element)nodelist.item(i);
@@ -160,37 +169,44 @@ public class Level extends Group{
                 double radiusX = Double.parseDouble(node.getElementsByTagName("radiusX").item(0).getTextContent());
                 double radiusY = Double.parseDouble(node.getElementsByTagName("radiusY").item(0).getTextContent());
                 double experiTime = Double.parseDouble(node.getElementsByTagName("expireTime").item(0).getTextContent());
-                boolean direction = Boolean.parseBoolean(node.getElementsByTagName("rightSideStart").item(0).getTextContent());
                 ElipticMovingTarget tar = new ElipticMovingTarget(x , y , r , numbers,
-                        radiusX , radiusY , experiTime / velocity , direction , this, bulletcontroler);
+                        radiusX , radiusY , experiTime / velocity , this);
                 targets.add(tar);
-                System.out.println(direction);
+                continue;
+            }
+            if (XmlLinearObjectName.equals(node.getAttributes().getNamedItem(XmlTypeName).getTextContent())) {
+                double x = Double.parseDouble(node.getElementsByTagName("x").item(0).getTextContent());
+                double y = Double.parseDouble(node.getElementsByTagName("y").item(0).getTextContent());
+                double width = Double.parseDouble(node.getElementsByTagName("width").item(0).getTextContent());
+                double height = Double.parseDouble(node.getElementsByTagName("height").item(0).getTextContent());
+                double experiTime = Double.parseDouble(node.getElementsByTagName("expireTime").item(0).getTextContent());
+                LinearMovingTarget tar = new LinearMovingTarget(x , y , r , numbers,
+                        width , height , experiTime / velocity , this);
+                targets.add(tar);
+                continue;
+            }
+            if (XmlQuadCurveObjectName.equals(node.getAttributes().getNamedItem(XmlTypeName).getTextContent())) {
+                double x = Double.parseDouble(node.getElementsByTagName("x").item(0).getTextContent());
+                double y = Double.parseDouble(node.getElementsByTagName("y").item(0).getTextContent());
+                double x2 = Double.parseDouble(node.getElementsByTagName("x2").item(0).getTextContent());
+                double y2 = Double.parseDouble(node.getElementsByTagName("y2").item(0).getTextContent());
+                double x3 = Double.parseDouble(node.getElementsByTagName("x3").item(0).getTextContent());
+                double y3 = Double.parseDouble(node.getElementsByTagName("y3").item(0).getTextContent());
+                double experiTime = Double.parseDouble(node.getElementsByTagName("expireTime").item(0).getTextContent());
+                QuadCruveMovingTarget tar = new QuadCruveMovingTarget(x , y , r , numbers,
+                        x2 , y2 , x3 , y3 , experiTime / velocity , this);
+                targets.add(tar);
                 continue;
             }
         }
 
-
-   /*     ElipticMovingTarget pom = new ElipticMovingTarget(150 , 100 , r , numbers,
-                80 , 50 , 6.0 / velocity , true , this, bulletcontroler);
-
-        ElipticMovingTarget pom2 = new ElipticMovingTarget(300 , 100 , r , numbers
-                , 80 , 50 , 6.0 / velocity, false, this, bulletcontroler);
-
-        ElipticMovingTarget pom3 = new ElipticMovingTarget(450 , 100 , r , numbers
-                , 80 , 50 , 6.0 / velocity, false, this, bulletcontroler);
-
-        targets.add(pom);
-        targets.add(pom2);
-        targets.add(pom3);
-        */
-        return targets;
     }
 
     public void start() {
+        bulletcontroler.setCanShoot();
         for (int i = 0 ; i < numOfTargetsOnScene ; i++)
             targets.get(i).play();
         index = numOfTargetsOnScene;
-
     }
 
     public void insertPointsAndRemove(Target t, double x , double y) {
@@ -210,17 +226,19 @@ public class Level extends Group{
         if (index >= targets.size()) {
 
             if (++index == targets.size() + numOfTargetsOnScene) {
-                System.out.println("Gotov nivo");
-                System.out.println(numOfPointsHit);
+                Main.finishLevel();
+
+
 
                 if (nextLevel != null) {
                     parent.getChildren().remove(this);
                     parent.getChildren().addAll(nextLevel);
-                    nextLevel.start();
                 }
                 else {
-                    System.out.println("Ovde treba da se zavrsi igra");
-                    System.out.println(Main.getScore());
+
+                    playable.getChildren().addAll(new Result(diffPer/2*(1.0 - diffPer)*width,
+                            diffPer/2*((1.0 - diffPer)*height -gunHeight) , (1.0 - diffPer)*(1.0 - diffPer)*width,(1.0 - diffPer)*((1.0 - diffPer)*height -gunHeight) ));
+                    keyControler.setEndGame();
                 }
             }
         }

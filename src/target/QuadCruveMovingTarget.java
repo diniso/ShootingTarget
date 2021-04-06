@@ -1,24 +1,25 @@
 package target;
 
-import controlers.BulletCountControler;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
+import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.QuadCurve;
 import javafx.util.Duration;
 import levels.Level;
 
-public class LinearMovingTarget extends Target{
+public class QuadCruveMovingTarget extends Target{
 
     private final ScaleTransition scale;
     private final FadeTransition fade;
-    private final TranslateTransition translate;
+    private final PathTransition path;
     private final Level level;
 
-
-    public LinearMovingTarget(double x, double y, double r, int[] numbers , double width , double height, double seconds, Level l) {
+    public QuadCruveMovingTarget(double x, double y, double r, int[] numbers , double x2 , double y2, double x3 , double y3, double seconds , Level l) {
         super(x, y, r, numbers);
-        this.setOpacity(0.0);
+        this.setOpacity(0);
         level = l;
 
         Duration t = Duration.seconds(seconds);
@@ -29,30 +30,30 @@ public class LinearMovingTarget extends Target{
         fade = new FadeTransition(t , this);
         fade.setFromValue(1.0); fade.setToValue(0.0);
 
-        translate = new TranslateTransition(t , this);
-        translate.setByX(width);
-        translate.setByY(height);
+        QuadCurve curve = new QuadCurve(x + r/2 , y + r/2 , x2 , y2 , x3 , y3);
+
+        path = new PathTransition(t , curve , this);
+
 
     }
 
     public void stop(double x , double y) {
-        translate.stop();
+        path.stop();
         fade.stop();
         scale.stop();
         level.insertPointsAndRemove(this , x , y);
-
     }
 
     public void play() {
         this.setListeners();
         scale.setOnFinished(actionEvent -> level.insertPointsAndRemove(this , 0 , 0));
 
-        translate.setInterpolator(Interpolator.EASE_IN);
+        path.setInterpolator(Interpolator.EASE_IN);
         fade.setInterpolator(Interpolator.EASE_IN);
         scale.setInterpolator(Interpolator.EASE_IN);
 
         this.setOpacity(1);
-        translate.play();
+        path.play();
         fade.play();
         scale.play();
 

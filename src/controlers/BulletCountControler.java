@@ -8,6 +8,7 @@ public class BulletCountControler implements EventHandler<MouseEvent> {
 
     private final int numOfBulltets ;
     private int cnt = 0;
+    private boolean canShoot = false;
     private final Text text;
 
     public BulletCountControler(int numOfBulltets, Text text) {
@@ -20,10 +21,14 @@ public class BulletCountControler implements EventHandler<MouseEvent> {
     }
 
     public boolean bulletFired() {
-        if (cnt == numOfBulltets) return false;
+        if (!canShoot || cnt == numOfBulltets) return false;
         cnt++;
         text.setText("" + (numOfBulltets - cnt));
         return true;
+    }
+
+    public void setCanShoot() {
+        canShoot = true;
     }
 
 }

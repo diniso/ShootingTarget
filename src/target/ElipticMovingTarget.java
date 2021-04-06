@@ -18,8 +18,8 @@ public class ElipticMovingTarget extends Target{
     private final PathTransition path;
     private final Level level;
 
-    public ElipticMovingTarget(double x, double y, double r, int[] numbers , double radiusX , double radiusY, double seconds , boolean rightSideStart , Level l, BulletCountControler bulletcontroler) {
-        super(x, y, r, numbers, bulletcontroler);
+    public ElipticMovingTarget(double x, double y, double r, int[] numbers , double radiusX , double radiusY, double seconds , Level l) {
+        super(x, y, r, numbers);
         this.setOpacity(0);
         level = l;
 
@@ -31,14 +31,7 @@ public class ElipticMovingTarget extends Target{
         fade = new FadeTransition(t , this);
         fade.setFromValue(1.0); fade.setToValue(0.0);
 
-        Ellipse el;
-        if (rightSideStart) {
-            el = new Ellipse(x + r/2+ radiusX, y + r/2, radiusX,radiusY);
-        }
-        else {
-            el = new Ellipse(x +r/2 - radiusX ,y + r/2, radiusX,radiusY);
-        }
-
+        Ellipse el = new Ellipse(x +r/2 - radiusX ,y + r/2, radiusX,radiusY);;
         el.setFill(null);
         el.setStroke(Color.BLUE);
 
@@ -62,9 +55,10 @@ public class ElipticMovingTarget extends Target{
         fade.setInterpolator(Interpolator.EASE_IN);
         scale.setInterpolator(Interpolator.EASE_IN);
 
+        this.setOpacity(1);
         path.play();
         fade.play();
         scale.play();
-        this.setOpacity(1);
+
     }
 }

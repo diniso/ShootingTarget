@@ -1,31 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <level id="1">
-	<object id="1" type="elliptic">
-		<x>150</x>
-		<y>100</y>
-		<radiusX>80</radiusX>
-		<radiusY>50</radiusY>
-		<rightSideStart>true</rightSideStart>	
-		<expireTime>6.0</expireTime>
-	</object>
+    <object id="1" type="linear">
+        <x>150</x>
+        <y>100</y>
+        <width>80</width>
+        <height>50</height>
+        <expireTime>6.0</expireTime>
+    </object>
 
 
-	<object id="2" type="elliptic">
-		<x>300</x>
-		<y>80</y>
-		<radiusX>60</radiusX>
-		<radiusY>40</radiusY>
-		<rightSideStart>false</rightSideStart>	
-		<expireTime>5.5</expireTime>
-	</object>
+    <object id="2" type="linear">
+        <x>300</x>
+        <y>80</y>
+        <width>-60</width>
+        <height>40</height>
+        <expireTime>5.5</expireTime>
+    </object>
 
-	<object id="3" type="elliptic">
-		<x>560</x>
-		<y>230</y>
-		<radiusX>80</radiusX>
-		<radiusY>50</radiusY>
-		<rightSideStart>false</rightSideStart>	
-		<expireTime>5.0</expireTime>
-	</object>
+    <object id="3" type="linear">
+        <x>560</x>
+        <y>230</y>
+        <width>-80</width>
+        <height>-50</height>
+        <expireTime>5.0</expireTime>
+    </object>
 </level>

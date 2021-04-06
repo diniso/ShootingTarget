@@ -6,32 +6,33 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import levels.Level;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 
 public class Main extends Application {
 
+    private static final int levelNumber = 3;
+    private static final int levelRepetition= 2;
     private static final Random rd = new Random();
-    private static final double width = 800 , height = 600;
+    public static final double width = 800 , height = 600;
     private static int[] targetNumbers;
     private static final int centerPoints = 150 , minNumOfCircles = 6, maxNumOfCircles = 7;
+    private static final int hoursInSeconds = 3600;
+    private static final int minutesInSeconds = 60;
+    private static final double minimumPerctangeBullets = 1.0;
 
     private static final ArrayList<Level> leveli = new ArrayList<>();
+    private static final Group root = new Group();
+    private static Date startTimeOfGame;
+    private static long milisecondsPlayed;
+    private static double PerctangeBullets = 2.0;
 
     private Scene getScene( double width, double height){
         Scene scene = null;
         try {
-            Group root = new Group();
-            Level l1 = new Level( width , height, 5 , 1 , 1, 1, root );
-            Level l2 = new Level( width , height, 5 , 1.5 , 1, 2, root);
-            l1.setNextLevel(l2);
-            leveli.add(l1);
-            leveli.add(l2);
-            l1.start();
-
-            root.getChildren().addAll(l1);
+            createLevelsAndStart();
             scene = new Scene(root , width , height);
         }
         catch (Exception e) {e.printStackTrace();}
@@ -48,6 +49,24 @@ public class Main extends Application {
     }
 
 
+    public static void createLevelsAndStart() throws Exception {
+        leveli.clear();
+        milisecondsPlayed = 0;
+        double velocity = 1.0;
+        for (int j = 0 ; j < levelRepetition ; j++) {
+            for (int i = 0 ; i < levelNumber ; i++) {
+                Level l = new Level(width , height, PerctangeBullets, velocity, i+1, j+1, root);
+                leveli.add(l);
+            }
+            velocity += 0.25;
+            PerctangeBullets = minimumPerctangeBullets + (PerctangeBullets - minimumPerctangeBullets)/2;
+        }
+
+        for (int i = leveli.size() -1 ; i > 0 ; i--)
+            leveli.get(i-1).setNextLevel(leveli.get(i));
+
+        root.getChildren().addAll(leveli.get(0));
+    }
 
 
     public static void main(String[] args) {
@@ -80,4 +99,30 @@ public class Main extends Application {
         return ret;
     }
 
+    public static void startTime() {
+        startTimeOfGame = new Date();
+    }
+
+    public static void finishLevel() {
+        Date endTimeOfLevel = new Date();
+        milisecondsPlayed += endTimeOfLevel.getTime() - startTimeOfGame.getTime() ;
+    }
+
+    public static long getMilisecondsPlayed() {
+        return milisecondsPlayed;
+    }
+
+    public static  String getTimeSpentInGame() {
+        int secondsPlayed = (int)(milisecondsPlayed / 1000);
+        int hours = secondsPlayed / hoursInSeconds , minutes = secondsPlayed / minutesInSeconds , seconds = secondsPlayed%minutesInSeconds;
+        String time = "";
+        if (hours < 10) time += "0" + hours + ":";
+        else time += hours + ":";
+        if (minutes < 10) time += "0" + minutes  + ":";
+        else time += minutes + ":";
+        if (seconds < 10) time += "0" + seconds ;
+        else time += seconds;
+
+        return time;
+    }
 }
