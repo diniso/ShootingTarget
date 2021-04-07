@@ -22,12 +22,14 @@ public class Main extends Application {
     private static final int hoursInSeconds = 3600;
     private static final int minutesInSeconds = 60;
     private static final double minimumPerctangeBullets = 1.0;
+    private static final double maximumPerctangeBullets = 2.0;
 
     private static final ArrayList<Level> leveli = new ArrayList<>();
-    private static final Group root = new Group();
+    public static final Group root = new Group();
     private static Date startTimeOfGame;
     private static long milisecondsPlayed;
     private static double PerctangeBullets = 2.0;
+    public static Stage myStage;
 
     private Scene getScene( double width, double height){
         Scene scene = null;
@@ -42,6 +44,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage){
+        myStage = primaryStage;
         primaryStage.setTitle("Target");
         primaryStage.setScene(getScene( width , height));
         primaryStage.setResizable(false);
@@ -52,6 +55,7 @@ public class Main extends Application {
     public static void createLevelsAndStart() throws Exception {
         leveli.clear();
         milisecondsPlayed = 0;
+        PerctangeBullets = maximumPerctangeBullets;
         double velocity = 1.0;
         for (int j = 0 ; j < levelRepetition ; j++) {
             for (int i = 0 ; i < levelNumber ; i++) {

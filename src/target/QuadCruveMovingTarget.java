@@ -19,7 +19,6 @@ public class QuadCruveMovingTarget extends Target{
 
     public QuadCruveMovingTarget(double x, double y, double r, int[] numbers , double x2 , double y2, double x3 , double y3, double seconds , Level l) {
         super(x, y, r, numbers);
-        this.setOpacity(0);
         level = l;
 
         Duration t = Duration.seconds(seconds);
@@ -30,7 +29,7 @@ public class QuadCruveMovingTarget extends Target{
         fade = new FadeTransition(t , this);
         fade.setFromValue(1.0); fade.setToValue(0.0);
 
-        QuadCurve curve = new QuadCurve(x + r/2 , y + r/2 , x2 , y2 , x3 , y3);
+        QuadCurve curve = new QuadCurve(x  , y  , x2 , y2 , x3 , y3);
 
         path = new PathTransition(t , curve , this);
 
@@ -52,7 +51,7 @@ public class QuadCruveMovingTarget extends Target{
         fade.setInterpolator(Interpolator.EASE_IN);
         scale.setInterpolator(Interpolator.EASE_IN);
 
-        this.setOpacity(1);
+
         path.play();
         fade.play();
         scale.play();

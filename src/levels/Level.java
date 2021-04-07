@@ -6,6 +6,7 @@ import controlers.KeyControler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -85,14 +86,15 @@ public class Level extends Group{
         Gunpoint point = new Gunpoint(-gunpointWidth /2 , -gunpointHeight / 2 , gunpointWidth, gunpointHeight);
 
         playable.setOnMouseMoved( new GunControler(gun.getMyRotate(), point.getMyTranslate()));
-        playable.setOnMouseClicked(bulletcontroler = new BulletCountControler(numOfBullets, numOfBulletsLeft));
+      //  playable.setOnMousePressed(bulletcontroler = new BulletCountControler(numOfBullets, numOfBulletsLeft));
+        playable.addEventHandler(MouseEvent.MOUSE_PRESSED, bulletcontroler = new BulletCountControler(numOfBullets, numOfBulletsLeft));
 
         for (Target t : targets)
             t.setBulletcontroler(bulletcontroler);
 
         playable.getChildren().addAll(background, gun);
         playable.getChildren().addAll(point);
-        playable.getChildren().addAll(targets);
+        point.setMouseTransparent(true);
 
 
         mainStage.getChildren().addAll(wall , playable);
@@ -127,7 +129,8 @@ public class Level extends Group{
 
         Group targetgroup = new Group();
         numOfTargetsLeft = new Text("" + targets.size());
-        TargetWithoutNumbers targetpicture = new TargetWithoutNumbers(upperWindowX + upperWindowWidth*7/8, upperWindowY * 3.5, (upperWindowWidth * diffPer / 2)/2, Main.getTargetNumbers().length) ;
+        double targetR = (upperWindowHeight )/2;
+        TargetWithoutNumbers targetpicture = new TargetWithoutNumbers(upperWindowX + upperWindowWidth*7/8, targetR*5/4, targetR, Main.getTargetNumbers().length) ;
         numOfTargetsLeft.setFont(fontsize);
         numOfTargetsLeft.setX(upperWindowX + upperWindowWidth*7/8 + upperWindowWidth *diffPer*1/2);
         numOfTargetsLeft.setY(upperWindowY + upperWindowHeight *(1.0-diffPer));
@@ -204,8 +207,10 @@ public class Level extends Group{
 
     public void start() {
         bulletcontroler.setCanShoot();
-        for (int i = 0 ; i < numOfTargetsOnScene ; i++)
+        for (int i = 0 ; i < numOfTargetsOnScene ; i++) {
+            playable.getChildren().add(1 , targets.get(i));
             targets.get(i).play();
+        }
         index = numOfTargetsOnScene;
     }
 
@@ -243,6 +248,7 @@ public class Level extends Group{
             }
         }
         else {
+            playable.getChildren().add(1 , targets.get(index));
             targets.get(index).play();
             index++;
         }

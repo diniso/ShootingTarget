@@ -4,31 +4,181 @@
     <object id="1" type="quadcurve">
         <x>150</x>
         <y>100</y>
-        <x2>0</x2>
-        <y2>200</y2>
-        <x3>15</x3>
-        <y3>23</y3>
-        <expireTime>6.0</expireTime>
+        <x2>50</x2>
+        <y2>450</y2>
+        <x3>250</x3>
+        <y3>310</y3>
+        <expireTime>4.5</expireTime>
     </object>
 
 
     <object id="2" type="quadcurve">
         <x>350</x>
         <y>300</y>
-        <x2>400</x2>
+        <x2>-100</x2>
         <y2>400</y2>
-        <x3>250</x3>
-        <y3>200</y3>
-        <expireTime>5.5</expireTime>
+        <x3>150</x3>
+        <y3>100</y3>
+        <expireTime>4.2</expireTime>
     </object>
 
-    <object id="3" type="quadcurve">
+    <object id="3" type="linear">
         <x>200</x>
         <y>90</y>
+        <width>-70</width>
+        <height>50</height>
+        <expireTime>1.2</expireTime>
+    </object>
+
+    <object id="4" type="elliptic">
+        <x>200</x>
+        <y>270</y>
+        <radiusX>50</radiusX>
+        <radiusY>50</radiusY>
+        <expireTime>3.7</expireTime>
+    </object>
+
+    <object id="5" type="quadcurve">
+        <x>90</x>
+        <y>270</y>
         <x2>600</x2>
-        <y2>150</y2>
-        <x3>400</x3>
+        <y2>-90</y2>
+        <x3>600</x3>
+        <y3>320</y3>
+        <expireTime>3.3</expireTime>
+    </object>
+
+    <object id="6" type="linear">
+        <x>450</x>
+        <y>310</y>
+        <width>-10</width>
+        <height>-200</height>
+        <expireTime>3.1</expireTime>
+    </object>
+
+    <object id="7" type="quadcurve">
+        <x>200</x>
+        <y>150</y>
+        <x2>10</x2>
+        <y2>60</y2>
+        <x3>520</x3>
+        <y3>310</y3>
+        <expireTime>3.0</expireTime>
+    </object>
+
+    <object id="8" type="elliptic">
+        <x>510</x>
+        <y>110</y>
+        <radiusX>20</radiusX>
+        <radiusY>30</radiusY>
+        <expireTime>2.8</expireTime>
+    </object>
+
+    <object id="9" type="linear">
+        <x>510</x>
+        <y>320</y>
+        <width>-400</width>
+        <height>10</height>
+        <expireTime>1.1</expireTime>
+    </object>
+
+    <object id="10" type="quadcurve">
+        <x>140</x>
+        <y>110</y>
+        <x2>600</x2>
+        <y2>50</y2>
+        <x3>550</x3>
         <y3>300</y3>
-        <expireTime>5.0</expireTime>
+        <expireTime>2.7</expireTime>
+    </object>
+
+    <object id="11" type="quadcurve">
+        <x>510</x>
+        <y>310</y>
+        <x2>650</x2>
+        <y2>15</y2>
+        <x3>95</x3>
+        <y3>300</y3>
+        <expireTime>1.6</expireTime>
+    </object>
+
+    <object id="12" type="linear">
+        <x>350</x>
+        <y>150</y>
+        <width>-150</width>
+        <height>150</height>
+        <expireTime>1.7</expireTime>
+    </object>
+
+    <object id="13" type="elliptic">
+        <x>200</x>
+        <y>115</y>
+        <radiusX>100</radiusX>
+        <radiusY>40</radiusY>
+        <expireTime>2.5</expireTime>
+    </object>
+
+    <object id="14" type="quadcurve">
+        <x>200</x>
+        <y>300</y>
+        <x2>600</x2>
+        <y2>350</y2>
+        <x3>150</x3>
+        <y3>90</y3>
+        <expireTime>2.3</expireTime>
+    </object>
+
+    <object id="15" type="linear">
+        <x>200</x>
+        <y>90</y>
+        <width>310</width>
+        <height>150</height>
+        <expireTime>2.1</expireTime>
+    </object>
+
+    <object id="16" type="quadcurve">
+        <x>420</x>
+        <y>180</y>
+        <x2>10</x2>
+        <y2>10</y2>
+        <x3>420</x3>
+        <y3>300</y3>
+        <expireTime>1.4</expireTime>
+    </object>
+
+    <object id="17" type="quadcurve">
+        <x>110</x>
+        <y>90</y>
+        <x2>50</x2>
+        <y2>310</y2>
+        <x3>500</x3>
+        <y3>300</y3>
+        <expireTime>1.3</expireTime>
+    </object>
+
+    <object id="18" type="linear">
+        <x>430</x>
+        <y>250</y>
+        <width>-250</width>
+        <height>-120</height>
+        <expireTime>1.2</expireTime>
+    </object>
+
+    <object id="19" type="linear">
+        <x>510</x>
+        <y>90</y>
+        <width>-400</width>
+        <height>230</height>
+        <expireTime>1.2</expireTime>
+    </object>
+
+    <object id="20" type="quadcurve">
+        <x>350</x>
+        <y>200</y>
+        <x2>350</x2>
+        <y2>-20</y2>
+        <x3>80</x3>
+        <y3>320</y3>
+        <expireTime>1.2</expireTime>
     </object>
 </level>

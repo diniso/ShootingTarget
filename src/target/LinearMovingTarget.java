@@ -18,7 +18,6 @@ public class LinearMovingTarget extends Target{
 
     public LinearMovingTarget(double x, double y, double r, int[] numbers , double width , double height, double seconds, Level l) {
         super(x, y, r, numbers);
-        this.setOpacity(0.0);
         level = l;
 
         Duration t = Duration.seconds(seconds);
@@ -51,7 +50,7 @@ public class LinearMovingTarget extends Target{
         fade.setInterpolator(Interpolator.EASE_IN);
         scale.setInterpolator(Interpolator.EASE_IN);
 
-        this.setOpacity(1);
+
         translate.play();
         fade.play();
         scale.play();

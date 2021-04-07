@@ -8,6 +8,7 @@ import javafx.scene.transform.Translate;
 public class Gunpoint extends Group {
 
     private final Translate translate;
+    private static final Color GunpointColor = Color.GREEN;
 
     public Gunpoint(double x , double y , double width , double height) {
         Line l1 = new Line(x , y , x + width , y + height);
@@ -16,8 +17,8 @@ public class Gunpoint extends Group {
         l1.setStrokeWidth(2);
         l2.setStrokeWidth(2);
 
-        l1.setStroke(Color.RED);
-        l2.setStroke(Color.RED);
+        l1.setStroke(GunpointColor);
+        l2.setStroke(GunpointColor);
 
 
         this.getChildren().addAll(l1 , l2);
