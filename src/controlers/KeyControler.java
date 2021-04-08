@@ -79,12 +79,12 @@ public class KeyControler implements EventHandler<KeyEvent> {
             case SPACE:
                 double screenX = robot.getMouseX();
                 double screenY = robot.getMouseY();
-               double sceneX = Main.myStage.getX();
-                double sceneY = Main.myStage.getY();
-                Node node = pick(playable, screenX - sceneX ,screenY - sceneY);
+                double sceneX = Main.myStage.getScene().getX() + Main.myStage.getX();
+                double sceneY = Main.myStage.getScene().getY() + Main.myStage.getY();
+                Node node = pick(playable, screenX - sceneX ,screenY - sceneY );
                 Event.fireEvent(node
                         ,new MouseEvent(MouseEvent.MOUSE_PRESSED, screenX - sceneX
-                        , screenY - sceneY , screenX  , screenY ,
+                        , screenY - sceneY, screenX  , screenY ,
                         MouseButton.PRIMARY , 1 , true, true, true, true, true,
                         true, true, true, true, true, null)
                 );
@@ -97,6 +97,25 @@ public class KeyControler implements EventHandler<KeyEvent> {
         endgame = true;
         foter.setText("Press ENTER to play again!");
         foter.getTransforms().addAll(new Translate(-Main.width / 20 , 0));
+    }
+
+    private static Node myPick(Node node , double sceneX , double sceneY) {
+        Point2D p = node.sceneToLocal(sceneX , sceneY);
+        List<Node> children = ((Parent)node).getChildrenUnmodifiable();
+
+        for (int i = children.size() -1 ; i >= 0 ; i--) {
+            Node child = children.get(i);
+            if (!child.contains(p)) continue;
+
+            List<Node> deca = ((Parent)child).getChildrenUnmodifiable();
+            for (int j = deca.size() - 1 ; j>= 0 ; j--) {
+                Node dete = deca.get(i);
+                if (dete.contains(p)) return dete;
+            }
+            return null;
+        }
+
+        return null;
     }
 
     private static Node pick(Node node, double sceneX, double sceneY) {
