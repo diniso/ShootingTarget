@@ -21,15 +21,19 @@ public class BulletCountControler implements EventHandler<MouseEvent> {
         bulletFired();
     }
 
-    public boolean bulletFired() {
-        if (!canShoot || cnt == numOfBulltets) return false;
+    public void bulletFired() {
+        if (!canFire()) return;
         cnt++;
         text.setText("" + (numOfBulltets - cnt));
-        return true;
     }
 
     public void setCanShoot() {
         canShoot = true;
+    }
+
+    public boolean canFire() {
+        if (!canShoot || cnt == numOfBulltets) return false;
+        return true;
     }
 
 }

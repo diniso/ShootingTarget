@@ -18,7 +18,7 @@ public class PointControler implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent mouseEvent ) {
-            if (!bulletcontroler.bulletFired()) return;
+            if (!bulletcontroler.canFire()) return;
             target.setPoints(points);
             target.stop(mouseEvent.getSceneX() , mouseEvent.getSceneY());
 
